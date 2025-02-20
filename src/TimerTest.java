@@ -7,14 +7,14 @@ import java.security.SecureRandom;
 public class TimerTest {
 
     //stuff for random variables
-private static SecureRandom secureRandom = new SecureRandom();
-//int variable which is assigned a random number between 0 and 30
-private static int ranNum1 = secureRandom.nextInt(31);
-private static int ranNum2 = secureRandom.nextInt(31);
-private static int ranNum3 = secureRandom.nextInt(31);
-private static int ranNum4 = secureRandom.nextInt(31);
-private static int ranNum5 = secureRandom.nextInt(31);
-private static int ranNum6 = secureRandom.nextInt(31);
+    private static SecureRandom secureRandom = new SecureRandom();
+    //int variable which is assigned a random number between 0 and 30
+    private static int ranNum1 = secureRandom.nextInt(31);
+    private static int ranNum2 = secureRandom.nextInt(31);
+    private static int ranNum3 = secureRandom.nextInt(31);
+    private static int ranNum4 = secureRandom.nextInt(31);
+    private static int ranNum5 = secureRandom.nextInt(31);
+    private static int ranNum6 = secureRandom.nextInt(31);
 
     //public static void main(String[] args) {
 

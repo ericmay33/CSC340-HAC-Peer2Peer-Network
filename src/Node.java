@@ -29,15 +29,8 @@ public class Node {
     }
 
     public void startHeartbeatTimer() {
-        int delay = random.nextInt(31) * 1000;
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                sendHeartbeat();
-            }
-        };
         
-        timer.schedule(task, delay);
+        // PIERCE TIMER
     }
 
     private void sendHeartbeat() {
