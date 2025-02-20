@@ -11,11 +11,9 @@ public class Message {
     private static final int NODE_IP_SIZE = 15;
     private static final int TIMESTAMP_SIZE = 4;
     private static final int FILE_LISTING_LENGTH_SIZE = 2;
-    private static final int MESSAGE_LENGTH = 2;
     
     // Application protocol control field instance variables
     private byte version;
-    private int length;
     private String nodeIP;
     private int timestamp;
     private String fileListing;
