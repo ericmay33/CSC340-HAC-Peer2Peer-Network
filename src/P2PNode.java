@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -30,7 +29,7 @@ public class P2PNode {
     // Read config file with IPs and Port of each node
     // CREATE A NODE OBJECT FOR EACH OF THE OTHER NODES AND ADD TO THIS ARRAY LIST
     public void loadKnownNodes() {
-
+        knownNodes.add(new Node("127.0.0.1", 7000)); // Send to ourselves for testing
     }
 
     // Start sending heartbeats at random intervals
@@ -70,8 +69,8 @@ public class P2PNode {
                 // int port = 
 
                 // TESTING IP AND PORT
-                String ip = "127.0.0.1";
-                int port = 7000;
+                String ip = node.getIP();
+                int port = node.getPort();
 
                 // Destination IP address, create datagram packet
                 InetAddress IPaddress = InetAddress.getByName(ip);
@@ -86,9 +85,44 @@ public class P2PNode {
         }
     }
 
+    public void listenForHeartbeat() {
+        Thread receiveThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Bind to a specific port (7000 for testing)
+                    DatagramSocket socket = new DatagramSocket(7000);
+                    byte[] incomingData = new byte[5120];
+
+                    System.out.println("Listening for heartbeats on " + nodeIP + ":7000...\n");
+                    while (true) {
+                        DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
+                        socket.receive(incomingPacket);
+
+                        // Pass the full buffer because decode() stops where it should
+                        // Message knows the lengths of the fields and data
+                        Message receivedMessage = Message.decode(incomingPacket.getData());
+                        //InetAddress IPAddress = incomingPacket.getAddress();
+                        //int port = incomingPacket.getPort();
+                        
+                        System.out.println("Received message from client: " + receivedMessage.getNodeIP() +
+                                          " - Version: " + receivedMessage.getVersion() +
+                                          ", Timestamp: " + receivedMessage.getTimestamp() +
+                                          ", Files: " + receivedMessage.getFileListing() + "\n");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        receiveThread.setDaemon(true);
+        receiveThread.start();
+    }
+
     public static void main(String[] args) {
         P2PNode thisPC = new P2PNode("127.0.0.1");
         thisPC.loadKnownNodes();
+        thisPC.listenForHeartbeat();
         thisPC.startHeartbeatTimer();
     }
 }

@@ -37,8 +37,8 @@ public class UDPServer
                 int port = incomingPacket.getPort();
                 
                 System.out.println("Received message from client: " + message);
-                System.out.println("Client IP:"+IPAddress.getHostAddress());
-                System.out.println("Client port:"+port);
+                System.out.println("Client IP:" + IPAddress.getHostAddress());
+                System.out.println("Client port:" + port);
                 
                 String reply = "Thank you for the message";
                 byte[] data = reply.getBytes();

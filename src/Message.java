@@ -127,7 +127,7 @@ public class Message {
     }
 
     public static String getCurrentFileListing() {
-        File homeDir = new File(System.getProperty("user.home"));
+        File homeDir = new File("home");
         if (homeDir.exists() && homeDir.isDirectory()) {
             return Arrays.stream(homeDir.list()).collect(Collectors.joining(","));
         } else {
