@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class P2PNode {
 
     private String nodeIP;
-    private ArrayList<String> knownNodes;
+    private ArrayList<Node> knownNodes;
     private SecureRandom secureRandom;
     private ScheduledExecutorService scheduler;
     private int ranNum1;
@@ -28,13 +28,9 @@ public class P2PNode {
 
     // Load list of known nodes from config
     // Read config file with IPs and Port of each node
-    // CREATE A NODE CLASS, CONSTRUCT THE IP AND PORT USING FILE READER FOR EACH NODE OBJECT
-    // WE CAN THEN ADD NODES TO AN ARRAY LIST AND ACCESS THE PORT AND IP WHEN NEEDED LATER FOR EACH NODE
+    // CREATE A NODE OBJECT FOR EACH OF THE OTHER NODES AND ADD TO THIS ARRAY LIST
     public void loadKnownNodes() {
-        // Fake nodes for testing right now
-        this.knownNodes.add("1");
-        this.knownNodes.add("2");
-        this.knownNodes.add("3");
+
     }
 
     // Start sending heartbeats at random intervals
@@ -67,7 +63,7 @@ public class P2PNode {
             byte[] byteMessage = heartbeat.getMessageBytes();
 
             // Send to every other node
-            for (String node : knownNodes) {
+            for (Node node : knownNodes) {
                 // WE CAN CREATE A NODE CLASS WITH IP AND PORT AS INSTANCE VARIABLES
                 // WE CAN JUST USE GETTER METHODS TO ACCESS THE IP AND PORT OF EACH NODE WITH THE LOOP
                 // String ip = 
