@@ -6,6 +6,10 @@ import java.util.stream.Collectors;
 
 public class Message {
 
+    // HARDCODE IP ADDRESS USING CONFIG FILE
+    // TWO PROGRAMS READ AND WRITE
+    // CAN USE EXECUTER SERVICE INSTEAD OF GIVEN CODE
+
     // Application protocol fixed field sizes represented in number of bytes
     private static final int VERSION_SIZE = 1;
     private static final int NODE_IP_SIZE = 15;
