@@ -41,7 +41,7 @@ public class TimerTest {
     //     scheduler.schedule(task, randomInRange, TimeUnit.SECONDS); 
     // }
    // }   
-    private static void singleTest(){
+    private static void singleTest() {
         // Ngl idrk
         var scheduler = Executors.newScheduledThreadPool(1);
 

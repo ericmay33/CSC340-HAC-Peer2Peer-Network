@@ -7,6 +7,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class P2PNode {
 
     private String nodeIP;
@@ -15,9 +21,9 @@ public class P2PNode {
     private ScheduledExecutorService scheduler;
     private int ranNum1;
     private byte version;
+    private static String myIP;
 
     public P2PNode(String nodeIP) {
-        this.nodeIP = nodeIP;
         this.knownNodes = new ArrayList<>();
         this.secureRandom = new SecureRandom();
         this.scheduler = Executors.newScheduledThreadPool(1);
@@ -25,10 +31,56 @@ public class P2PNode {
         this.version = 1;
     }
 
+    public void CreateKnownNode(String ipAddress, int port) {
+        knownNodes.add(new Node(ipAddress, port));
+    }
+
     // Load list of known nodes from config
     // Read config file with IPs and Port of each node
     // CREATE A NODE OBJECT FOR EACH OF THE OTHER NODES AND ADD TO THIS ARRAY LIST
     public void loadKnownNodes() {
+        String filePath = ".config"; // Path to your .config file
+        int portNum = 7000;
+        try {
+            // Get the local IP address
+            String myIP = InetAddress.getLocalHost().getHostAddress();
+            System.out.println("Your IP: " + myIP);
+
+            // Read and compare each line from the .config file
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                int lineNumber = 0;
+                boolean foundMatch = false;
+
+                // Loop through all lines in the file
+                while ((line = reader.readLine()) != null) {
+                    lineNumber++;
+                    // Compare the current line with myIP
+                    if (myIP.equals(line.trim())) { // .trim() removes leading/trailing whitespace
+                        System.out.println("Match found at line " + lineNumber + ": " + line);
+                        foundMatch = true;
+                    } else {
+                        System.out.println("No match at line " + lineNumber + ": " + line);
+                        CreateKnownNode(line, portNum);
+                        portNum++;
+                    }
+                }
+
+                if (!foundMatch && lineNumber > 0) {
+                    System.out.println("No matching IP found in the config file.");
+                } else if (lineNumber == 0) {
+                    System.out.println("The config file is empty.");
+                }
+
+            } catch (IOException e) {
+                System.out.println("Error reading file: " + e.getMessage());
+            }
+
+        } catch (UnknownHostException e) {
+            System.out.println("Could not determine local IP address: " + e.getMessage());
+        }
+    
+        this.nodeIP = "";
         knownNodes.add(new Node("127.0.0.1", 7000)); // Send to ourselves for testing
     }
 
@@ -120,7 +172,12 @@ public class P2PNode {
     }
 
     public static void main(String[] args) {
-        P2PNode thisPC = new P2PNode("127.0.0.1");
+        try {
+        myIP = InetAddress.getLocalHost().getHostAddress();
+        }catch (UnknownHostException e) {
+            System.out.println("Could not determine local IP address: " + e.getMessage());
+        }
+        P2PNode thisPC = new P2PNode(myIP);
         thisPC.loadKnownNodes();
         thisPC.listenForHeartbeat();
         thisPC.startHeartbeatTimer();
