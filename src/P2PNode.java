@@ -29,6 +29,7 @@ public class P2PNode {
         this.scheduler = Executors.newScheduledThreadPool(1);
         this.ranNum1 = secureRandom.nextInt(31);
         this.version = 1;
+        knownNodes.add(new Node(nodeIP, 7000));
     }
 
     public void CreateKnownNode(String ipAddress, int port) {
@@ -40,7 +41,7 @@ public class P2PNode {
     // CREATE A NODE OBJECT FOR EACH OF THE OTHER NODES AND ADD TO THIS ARRAY LIST
     public void loadKnownNodes() {
         String filePath = ".config"; // Path to your .config file
-        int portNum = 7000;
+        int portNum = 7001;
         try {
             // Get the local IP address
             String myIP = InetAddress.getLocalHost().getHostAddress();
@@ -81,7 +82,7 @@ public class P2PNode {
         }
     
         this.nodeIP = "";
-        knownNodes.add(new Node("127.0.0.1", 7000)); // Send to ourselves for testing
+        knownNodes.add(new Node("127.0.0.1", 7010)); // Send to ourselves for testing
     }
 
     // Start sending heartbeats at random intervals
