@@ -29,7 +29,7 @@ public class P2PNode {
         this.scheduler = Executors.newScheduledThreadPool(1);
         this.ranNum1 = secureRandom.nextInt(31);
         this.version = 1;
-        knownNodes.add(new Node(nodeIP, 7000));
+        // knownNodes.add(new Node(nodeIP, 7000));
     }
 
     public void CreateKnownNode(String ipAddress, int port) {
