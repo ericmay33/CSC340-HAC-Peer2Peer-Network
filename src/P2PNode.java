@@ -81,7 +81,7 @@ public class P2PNode {
             System.out.println("Could not determine local IP address: " + e.getMessage());
         }
     
-        this.nodeIP = "";
+        this.nodeIP = myIP;
         knownNodes.add(new Node("127.0.0.1", 7010)); // Send to ourselves for testing
     }
 
