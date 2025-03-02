@@ -1,1 +1,0 @@
-# CSC340-High-Availability-Cluster
