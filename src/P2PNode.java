@@ -62,10 +62,10 @@ public class P2PNode {
                     lineNumber++;
                     // Compare the current line with myIP
                     if (myIP.equals(line.trim())) { // .trim() removes leading/trailing whitespace
-                        System.out.println("Match found at line " + lineNumber + ": " + line);
+                        System.out.println(" ............................... \n| Match found at line " + lineNumber + ": " + line + " |\n ............................... ");
                         foundMatch = true;
                     } else {
-                        System.out.println("No match at line " + lineNumber + ": " + line);
+                        System.out.println(" ............................... \n| No match at line " + lineNumber + ": " + line + " |\n ............................... ");
                         CreateKnownNode(line, portNum);
                         portNum++;
                     }
@@ -137,7 +137,7 @@ public class P2PNode {
                 InetAddress IPaddress = InetAddress.getByName(ip);
                 DatagramPacket packet = new DatagramPacket(byteMessage, byteMessage.length, IPaddress, port);
                 socket.send(packet);
-                System.out.println("Sent heartbeat to " + ip + ":" + port + " at Unix time " + timestamp + "\n");
+                System.out.println("  --------------------------------------------------------  \n| Sent heartbeat to " + ip + ":" + port + " at Unix time " + timestamp + " |\n  --------------------------------------------------------  \n");
             }
             socket.close();
             version++;
@@ -155,7 +155,8 @@ public class P2PNode {
                     DatagramSocket socket = new DatagramSocket(7000);
                     byte[] incomingData = new byte[5120];
 
-                    System.out.println("Listening for heartbeats on " + nodeIP + ":7000...\n");
+                    System.out.println("  --------------------------------------------------  \n| Listening for heartbeats on " + nodeIP + ":7000... |\n  --------------------------------------------------  \n");
+                    
                     while (true) {
                         DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
                         socket.receive(incomingPacket);
@@ -166,10 +167,10 @@ public class P2PNode {
                         //InetAddress IPAddress = incomingPacket.getAddress();
                         //int port = incomingPacket.getPort();
                         
-                        System.out.println("Received message from client: " + receivedMessage.getNodeIP() +
+                        System.out.println("  ----------------------------------------------------------------------------------------------------------------------  \n| Received message from client: " + receivedMessage.getNodeIP() +
                                           " - Version: " + receivedMessage.getVersion() +
                                           ", Timestamp: " + receivedMessage.getTimestamp() +
-                                          ", Files: " + receivedMessage.getFileListing() + "\n");
+                                          ", Files: " + receivedMessage.getFileListing() + " |\n  ----------------------------------------------------------------------------------------------------------------------  \n");
 
                         //UPDATE HASHMAP VARIABLES
                         ipAndMSG.put(receivedMessage.getNodeIP(), receivedMessage);
@@ -189,14 +190,17 @@ public class P2PNode {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                System.out.println("NODE AVAILABILITY:\n");
+                System.out.println("######################\n# NODE AVAILABILITY: #\n######################\n");
                 for (String key : ipAndMSG.keySet()) {
                     Message message = ipAndMSG.get(key);
+                    if(message.getTimestamp() > message.getTimestamp()+30) {
+                        nodeUp.put(message.getNodeIP(),false);
+                    }
                     if(nodeUp.get(key)){
-                        System.out.println("IP: " + message.getNodeIP() + " FileListing: " + message.getFileListing() + "\n");
+                        System.out.println("  -------------------------------------------------------------  \n| IP: " + message.getNodeIP() + " FileListing: " + message.getFileListing() + " |\n  -------------------------------------------------------------  ");
                     }
                     else{
-                        System.out.println("NODE DOWN\n");
+                        System.out.println("IP: " + message.getNodeIP() +" NODE DOWN\n");
                     }
                 }
                 // String fileListing = Message.getCurrentFileListing();
