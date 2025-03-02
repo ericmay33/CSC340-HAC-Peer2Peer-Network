@@ -86,7 +86,7 @@ public class P2PNode {
         }
     
         this.nodeIP = myIP;
-        knownNodes.add(new Node("127.0.0.1", 7010)); // Send to ourselves for testing
+        knownNodes.add(new Node("127.0.0.1", 7000)); // Send to ourselves for testing
     }
 
     // Start sending heartbeats at random intervals
