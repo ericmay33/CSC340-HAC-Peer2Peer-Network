@@ -199,16 +199,17 @@ public class P2PNode {
             @Override
             public void run() {
                 System.out.println("######################\n# NODE AVAILABILITY: #\n######################\n");
+                int upOrDownTimestamp = (int) (System.currentTimeMillis() / 1000);
                 for (String key : ipAndMSG.keySet()) {
                     Message message = ipAndMSG.get(key);
-                    if(message.getTimestamp() > message.getTimestamp()+30) {
+                    if(upOrDownTimestamp > message.getTimestamp() + 30) {
                         nodeUp.put(message.getNodeIP(),false);
                     }
                     if(nodeUp.get(key)){
-                        System.out.println("  -------------------------------------------------------------  \n| IP: " + message.getNodeIP() + " FileListing: " + message.getFileListing() + " |\n  -------------------------------------------------------------  ");
+                        System.out.println("  -------------------------------------------------------------  \n| IP: " + message.getNodeIP() + " - IS ALIVE " + " FileListing: " + message.getFileListing() + " |\n  -------------------------------------------------------------  ");
                     }
                     else{
-                        System.out.println("IP: " + message.getNodeIP() +" NODE DOWN\n");
+                        System.out.println("  -------------------------------------------------------------  \n| IP: " + message.getNodeIP() + " - IS NOT ALIVE " + " FileListing: " + message.getFileListing() + " |\n  -------------------------------------------------------------  ");
                     }
                 }
                 // String fileListing = Message.getCurrentFileListing();
