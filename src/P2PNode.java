@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -22,6 +23,9 @@ public class P2PNode {
     private int ranNum1;
     private byte version;
     private static String myIP;
+    HashMap<String, Message> ipAndMSG = new HashMap<>();
+    HashMap<String, Boolean> nodeUp = new HashMap<>();
+    //private boolean nodeUp;
 
     public P2PNode(String nodeIP) {
         this.knownNodes = new ArrayList<>();
@@ -114,6 +118,10 @@ public class P2PNode {
             Message heartbeat = new Message(version, nodeIP, timestamp, fileListing);
             byte[] byteMessage = heartbeat.getMessageBytes();
 
+            //update p2p node in hashmap
+            ipAndMSG.put(myIP,heartbeat);
+            nodeUp.put(myIP,true);
+
             // Send to every other node
             for (Node node : knownNodes) {
                 // WE CAN CREATE A NODE CLASS WITH IP AND PORT AS INSTANCE VARIABLES
@@ -162,6 +170,10 @@ public class P2PNode {
                                           " - Version: " + receivedMessage.getVersion() +
                                           ", Timestamp: " + receivedMessage.getTimestamp() +
                                           ", Files: " + receivedMessage.getFileListing() + "\n");
+
+                        //UPDATE HASHMAP VARIABLES
+                        ipAndMSG.put(receivedMessage.getNodeIP(), receivedMessage);
+                        nodeUp.put(receivedMessage.getNodeIP(), true);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -172,15 +184,47 @@ public class P2PNode {
         receiveThread.start();
     }
 
+    public void listing () {
+        //make it so that this runs every 30 secs running through every node.
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("NODE AVAILABILITY:\n");
+                for (String key : ipAndMSG.keySet()) {
+                    Message message = ipAndMSG.get(key);
+                    if(nodeUp.get(key)){
+                        System.out.println("IP: " + message.getNodeIP() + " FileListing: " + message.getFileListing() + "\n");
+                    }
+                    else{
+                        System.out.println("NODE DOWN\n");
+                    }
+                }
+                // String fileListing = Message.getCurrentFileListing();
+                // System.out.println("IP: " + ipAndMSG + " FileListing: " + fileListing);
+                
+                // scheduler.schedule(this, 30, TimeUnit.SECONDS);
+            }
+        };
+
+        // Initial execution
+        scheduler.schedule(task, 30, TimeUnit.SECONDS);
+    }
+
+
+
     public static void main(String[] args) {
         try {
         myIP = InetAddress.getLocalHost().getHostAddress();
+        
         }catch (UnknownHostException e) {
             System.out.println("Could not determine local IP address: " + e.getMessage());
         }
         P2PNode thisPC = new P2PNode(myIP);
+        
+        //thisPC.listing();
         thisPC.loadKnownNodes();
         thisPC.listenForHeartbeat();
         thisPC.startHeartbeatTimer();
+        thisPC.listing();
     }
 }
