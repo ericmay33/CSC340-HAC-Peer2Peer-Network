@@ -23,7 +23,6 @@ public class P2PNode {
     private int ranNum1;
     private byte version;
     private static String myIP;
-    private int portNum;
     HashMap<String, Message> ipAndMSG = new HashMap<>();
     HashMap<String, Boolean> nodeUp = new HashMap<>();
     //private boolean nodeUp;
@@ -34,7 +33,6 @@ public class P2PNode {
         this.scheduler = Executors.newScheduledThreadPool(1);
         this.ranNum1 = secureRandom.nextInt(31);
         this.version = 1;
-        this.portNum = 0;
         // knownNodes.add(new Node(nodeIP, 7000));
     }
 
@@ -47,6 +45,7 @@ public class P2PNode {
     // CREATE A NODE OBJECT FOR EACH OF THE OTHER NODES AND ADD TO THIS ARRAY LIST
     public void loadKnownNodes() {
         String filePath = ".config"; // Path to your .config file
+        int portNum = 7001;
         try {
             // Get the local IP address
             String myIP = InetAddress.getLocalHost().getHostAddress();
@@ -55,27 +54,20 @@ public class P2PNode {
             // Read and compare each line from the .config file
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
                 String line;
-                String[] splitLine;
-                String lineIP;
-                int linePort;
                 int lineNumber = 0;
                 boolean foundMatch = false;
 
                 // Loop through all lines in the file
                 while ((line = reader.readLine()) != null) {
                     lineNumber++;
-                    line = line.replaceAll("\\s+", "");
-                    splitLine = line.split(":");
-                    lineIP = splitLine[0];
-                    linePort = Integer.parseInt(splitLine[1]);
                     // Compare the current line with myIP
-                    if (myIP.equals(lineIP)) { // .trim() removes leading/trailing whitespace
+                    if (myIP.equals(line.trim())) { // .trim() removes leading/trailing whitespace
                         System.out.println(" ............................... \n| Match found at line " + lineNumber + ": " + line + " |\n ............................... ");
                         foundMatch = true;
-                        this.portNum = linePort;
                     } else {
                         System.out.println(" ............................... \n| No match at line " + lineNumber + ": " + line + " |\n ............................... ");
-                        CreateKnownNode(lineIP, linePort);
+                        CreateKnownNode(line, portNum);
+                        portNum++;
                     }
                 }
 
@@ -163,7 +155,7 @@ public class P2PNode {
                     DatagramSocket socket = new DatagramSocket(7000);
                     byte[] incomingData = new byte[5120];
 
-                    System.out.println("  --------------------------------------------------  \n| Listening for heartbeats on " + nodeIP + ":" + portNum + "... |\n  --------------------------------------------------  \n");
+                    System.out.println("  --------------------------------------------------  \n| Listening for heartbeats on " + nodeIP + ":7000... |\n  --------------------------------------------------  \n");
                     
                     while (true) {
                         DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
@@ -238,6 +230,5 @@ public class P2PNode {
         thisPC.listenForHeartbeat();
         thisPC.startHeartbeatTimer();
         thisPC.listing();
-        
     }
 }
