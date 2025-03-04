@@ -156,7 +156,7 @@ public class P2PNode {
             public void run() {
                 try {
                     // Bind to a specific port (7000 for testing)
-                    DatagramSocket socket = new DatagramSocket(7000);
+                    DatagramSocket socket = new DatagramSocket(portNum);
                     byte[] incomingData = new byte[5120];
 
                     System.out.println("  --------------------------------------------------  \n| Listening for heartbeats on " + nodeIP + ":" + portNum + "... |\n  --------------------------------------------------  \n");
