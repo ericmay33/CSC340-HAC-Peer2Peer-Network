@@ -37,9 +37,7 @@ public class P2PNode {
         // knownNodes.add(new Node(nodeIP, 7000));
     }
 
-    // public void CreateKnownNode(String ipAddress, int port) {
-    //     knownNodes.add(new Node(ipAddress, port));
-    // }
+    
 
     // Load list of known nodes from config
     // Read config file with IPs and Port of each node
@@ -192,7 +190,7 @@ public class P2PNode {
         receiveThread.start();
     }
 
-    public void listing () {
+    public void listingUpdate () {
         //make it so that this runs every 30 secs running through every node.
         Runnable task = new Runnable() {
             @Override
@@ -230,7 +228,7 @@ public class P2PNode {
         thisPC.loadKnownNodes();
         thisPC.listenForHeartbeat();
         thisPC.startHeartbeatTimer();
-        thisPC.listing();
+        thisPC.listingUpdate();
         
     }
 }
