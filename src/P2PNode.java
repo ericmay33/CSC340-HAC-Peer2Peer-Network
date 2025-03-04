@@ -211,7 +211,7 @@ public class P2PNode {
                 // String fileListing = Message.getCurrentFileListing();
                 // System.out.println("IP: " + ipAndMSG + " FileListing: " + fileListing);
                 
-                // scheduler.schedule(this, 30, TimeUnit.SECONDS);
+                scheduler.schedule(this, 30, TimeUnit.SECONDS);
             }
         };
 
