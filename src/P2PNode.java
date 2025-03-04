@@ -27,7 +27,6 @@ public class P2PNode {
     HashMap<String, Message> ipAndMSG = new HashMap<>();
     HashMap<String, Boolean> nodeUp = new HashMap<>();
     //private boolean nodeUp;
-//String nodeIP
     public P2PNode() {
         this.knownNodes = new ArrayList<>();
         this.secureRandom = new SecureRandom();
@@ -38,9 +37,9 @@ public class P2PNode {
         // knownNodes.add(new Node(nodeIP, 7000));
     }
 
-    public void CreateKnownNode(String ipAddress, int port) {
-        knownNodes.add(new Node(ipAddress, port));
-    }
+    // public void CreateKnownNode(String ipAddress, int port) {
+    //     knownNodes.add(new Node(ipAddress, port));
+    // }
 
     // Load list of known nodes from config
     // Read config file with IPs and Port of each node
@@ -75,7 +74,7 @@ public class P2PNode {
                         this.portNum = linePort;
                     } else {
                         System.out.println(" ............................... \n| No match at line " + lineNumber + ": " + line + " |\n ............................... ");
-                        CreateKnownNode(lineIP, linePort);
+                        knownNodes.add(new Node(lineIP, linePort));
                     }
                 }
 
@@ -226,16 +225,8 @@ public class P2PNode {
 
 
     public static void main(String[] args) {
-        // try {
-        // myIP = InetAddress.getLocalHost().getHostAddress();
-        
-        // }catch (UnknownHostException e) {
-        //     System.out.println("Could not determine local IP address: " + e.getMessage());
-        // }
-       // P2PNode thisPC = new P2PNode(myIP);
         P2PNode thisPC = new P2PNode();
-        
-        //thisPC.listing();
+
         thisPC.loadKnownNodes();
         thisPC.listenForHeartbeat();
         thisPC.startHeartbeatTimer();
