@@ -79,6 +79,7 @@ public class P2PNode {
 
                 if (!foundMatch && lineNumber > 0) {
                     System.out.println("No matching IP found in the config file.");
+                    this.nodeIP = "127.0.0.1";
                 } else if (lineNumber == 0) {
                     System.out.println("The config file is empty.");
                 }
