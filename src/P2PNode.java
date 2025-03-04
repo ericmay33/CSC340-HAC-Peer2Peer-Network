@@ -69,6 +69,7 @@ public class P2PNode {
                     if (myIP.equals(lineIP)) { // .trim() removes leading/trailing whitespace
                         System.out.println(" ............................... \n| Match found at line " + lineNumber + ": " + line + " |\n ............................... ");
                         foundMatch = true;
+                        this.nodeIP = myIP;
                         this.portNum = linePort;
                     } else {
                         System.out.println(" ............................... \n| No match at line " + lineNumber + ": " + line + " |\n ............................... ");
@@ -89,9 +90,6 @@ public class P2PNode {
         } catch (UnknownHostException e) {
             System.out.println("Could not determine local IP address: " + e.getMessage());
         }
-    
-        this.nodeIP = myIP;
-        knownNodes.add(new Node("127.0.0.1", 7000)); // Send to ourselves for testing
     }
 
     // Start sending heartbeats at random intervals
