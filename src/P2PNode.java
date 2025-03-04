@@ -27,8 +27,8 @@ public class P2PNode {
     HashMap<String, Message> ipAndMSG = new HashMap<>();
     HashMap<String, Boolean> nodeUp = new HashMap<>();
     //private boolean nodeUp;
-
-    public P2PNode(String nodeIP) {
+//String nodeIP
+    public P2PNode() {
         this.knownNodes = new ArrayList<>();
         this.secureRandom = new SecureRandom();
         this.scheduler = Executors.newScheduledThreadPool(1);
@@ -226,13 +226,14 @@ public class P2PNode {
 
 
     public static void main(String[] args) {
-        try {
-        myIP = InetAddress.getLocalHost().getHostAddress();
+        // try {
+        // myIP = InetAddress.getLocalHost().getHostAddress();
         
-        }catch (UnknownHostException e) {
-            System.out.println("Could not determine local IP address: " + e.getMessage());
-        }
-        P2PNode thisPC = new P2PNode(myIP);
+        // }catch (UnknownHostException e) {
+        //     System.out.println("Could not determine local IP address: " + e.getMessage());
+        // }
+       // P2PNode thisPC = new P2PNode(myIP);
+        P2PNode thisPC = new P2PNode();
         
         //thisPC.listing();
         thisPC.loadKnownNodes();
