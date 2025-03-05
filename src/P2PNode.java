@@ -47,7 +47,7 @@ public class P2PNode {
         try {
             // Get the local IP address
             String myIP = InetAddress.getLocalHost().getHostAddress();
-            System.out.println("Your IP: " + myIP);
+            System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n Your IP: " + myIP + "\n/////////////////////////\n");
 
             // Read and compare each line from the .config file
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -67,12 +67,12 @@ public class P2PNode {
                     linePort = Integer.parseInt(splitLine[1]);
                     // Compare the current line with myIP
                     if (myIP.equals(lineIP)) { // .trim() removes leading/trailing whitespace
-                        System.out.println(" ............................... \n| Match found at line " + lineNumber + ": " + line + " |\n ............................... ");
+                        //System.out.println(" ............................... \n| Match found at line " + lineNumber + ": " + line + " |\n ............................... ");
                         foundMatch = true;
                         this.nodeIP = myIP;
                         this.portNum = linePort;
                     } else {
-                        System.out.println(" ............................... \n| No match at line " + lineNumber + ": " + line + " |\n ............................... ");
+                        //System.out.println(" ............................... \n| No match at line " + lineNumber + ": " + line + " |\n ............................... ");
                         knownNodes.add(new Node(lineIP, linePort));
                     }
                 }
@@ -141,7 +141,7 @@ public class P2PNode {
                 InetAddress IPaddress = InetAddress.getByName(ip);
                 DatagramPacket packet = new DatagramPacket(byteMessage, byteMessage.length, IPaddress, port);
                 socket.send(packet);
-                System.out.println("  --------------------------------------------------------  \n| Sent heartbeat to " + ip + ":" + port + " at Unix time " + timestamp + " |\n  --------------------------------------------------------  \n");
+                //System.out.println("  --------------------------------------------------------  \n| Sent heartbeat to " + ip + ":" + port + " at Unix time " + timestamp + " |\n  --------------------------------------------------------  \n");
             }
             socket.close();
             version++;
@@ -159,7 +159,7 @@ public class P2PNode {
                     DatagramSocket socket = new DatagramSocket(portNum);
                     byte[] incomingData = new byte[5120];
 
-                    System.out.println("  --------------------------------------------------  \n| Listening for heartbeats on " + nodeIP + ":" + portNum + "... |\n  --------------------------------------------------  \n");
+                    //System.out.println("  --------------------------------------------------  \n| Listening for heartbeats on " + nodeIP + ":" + portNum + "... |\n  --------------------------------------------------  \n");
                     
                     while (true) {
                         DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
@@ -171,10 +171,10 @@ public class P2PNode {
                         //InetAddress IPAddress = incomingPacket.getAddress();
                         //int port = incomingPacket.getPort();
                         
-                        System.out.println("  ----------------------------------------------------------------------------------------------------------------------  \n| Received message from client: " + receivedMessage.getNodeIP() +
-                                          " - Version: " + receivedMessage.getVersion() +
-                                          ", Timestamp: " + receivedMessage.getTimestamp() +
-                                          ", Files: " + receivedMessage.getFileListing() + " |\n  ----------------------------------------------------------------------------------------------------------------------  \n");
+                        //System.out.println("  ----------------------------------------------------------------------------------------------------------------------  \n| Received message from client: " + receivedMessage.getNodeIP() +
+                        //                  " - Version: " + receivedMessage.getVersion() +
+                        //                  ", Timestamp: " + receivedMessage.getTimestamp() +
+                        //                  ", Files: " + receivedMessage.getFileListing() + " |\n  ----------------------------------------------------------------------------------------------------------------------  \n");
 
                         //UPDATE HASHMAP VARIABLES
                         ipAndMSG.put(receivedMessage.getNodeIP(), receivedMessage);
@@ -194,7 +194,7 @@ public class P2PNode {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                System.out.println("######################\n# NODE AVAILABILITY: #\n######################\n");
+                System.out.println("|####################|\n| NODE AVAILABILITY: |\n|####################|\n");
                 int upOrDownTimestamp = (int) (System.currentTimeMillis() / 1000);
                 for (String key : ipAndMSG.keySet()) {
                     Message message = ipAndMSG.get(key);
@@ -202,12 +202,13 @@ public class P2PNode {
                         nodeUp.put(message.getNodeIP(),false);
                     }
                     if(nodeUp.get(key)){
-                        System.out.println("  -------------------------------------------------------------  \n| IP: " + message.getNodeIP() + " - IS ALIVE " + " FileListing: " + message.getFileListing() + " |\n  -------------------------------------------------------------  ");
+                        System.out.println("-=<{ IP: " + message.getNodeIP() + " - IS ALIVE " + " FileListing: " + message.getFileListing() + " }>=-");
                     }
                     else{
-                        System.out.println("  -------------------------------------------------------------  \n| IP: " + message.getNodeIP() + " - IS NOT ALIVE " + " FileListing: " + message.getFileListing() + " |\n  -------------------------------------------------------------  ");
+                        System.out.println("-=<{ IP: " + message.getNodeIP() + " - IS NOT ALIVE " + " FileListing: " + message.getFileListing() + " }>=-");
                     }
-                }
+                } 
+
                 // String fileListing = Message.getCurrentFileListing();
                 // System.out.println("IP: " + ipAndMSG + " FileListing: " + fileListing);
                 
