@@ -171,10 +171,10 @@ public class P2PNode {
                         //InetAddress IPAddress = incomingPacket.getAddress();
                         //int port = incomingPacket.getPort();
                         
-                        //System.out.println("  ----------------------------------------------------------------------------------------------------------------------  \n| Received message from client: " + receivedMessage.getNodeIP() +
-                        //                  " - Version: " + receivedMessage.getVersion() +
-                        //                  ", Timestamp: " + receivedMessage.getTimestamp() +
-                        //                  ", Files: " + receivedMessage.getFileListing() + " |\n  ----------------------------------------------------------------------------------------------------------------------  \n");
+                        System.out.println("  ----------------------------------------------------------------------------------------------------------------------  \n| Received message from client: " + receivedMessage.getNodeIP() +
+                                           " - Version: " + receivedMessage.getVersion() +
+                                           ", Timestamp: " + receivedMessage.getTimestamp() +
+                                           ", Files: " + receivedMessage.getFileListing() + " |\n  ----------------------------------------------------------------------------------------------------------------------  \n");
 
                         //UPDATE HASHMAP VARIABLES
                         ipAndMSG.put(receivedMessage.getNodeIP(), receivedMessage);
