@@ -194,7 +194,7 @@ public class P2PNode {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                System.out.println("|####################|\n| NODE AVAILABILITY: |\n|####################|\n");
+                System.out.println("\n|####################|\n| NODE AVAILABILITY: |\n|####################|\n");
                 int upOrDownTimestamp = (int) (System.currentTimeMillis() / 1000);
                 for (String key : ipAndMSG.keySet()) {
                     Message message = ipAndMSG.get(key);
